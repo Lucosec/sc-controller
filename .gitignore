@@ -1,3 +1,4 @@
+\#*\#
 *.pyc
 .*
 *~
@@ -19,7 +20,7 @@ appimage/
 *.cpp
 *.vdf
 .kateconfig
-
+.flatpak-builder/
 dist/
 sccontroller.egg-info/
 !.github
