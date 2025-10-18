@@ -30,7 +30,7 @@ modules:
   - name: kernel-headers
     buildsystem: simple
     build-commands:
-      - make ARCH=x86_64 headers_install INSTALL_HDR_PATH=/app/usr
+      - make ARCH=x86_64 headers_install INSTALL_HDR_PATH=/app
     sources:
       - type: archive
         url: https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.12.53.tar.xz
@@ -39,13 +39,12 @@ modules:
     buildsystem: simple
     build-commands:
       - pip3 install --prefix=/app --no-deps --no-build-isolation .
-      - install -d /app/usr/share
-      - cp -rf /app/share/* /app/usr/share
       - mv /app/share/applications/sc-controller.desktop /app/share/applications/org.c0rn3j.sc-controller.desktop
       - sed -i 's/Icon=sc-controller/Icon=joystick/g' /app/share/applications/org.c0rn3j.sc-controller.desktop
     sources:
-    - type: git
-      url: https://github.com/Lucosec/sc-controller.git
-      tag: main
+      - type: git
+      - url: https://github.com/Lucosec/sc-controller.git
+      - tag: main
+
 
 
