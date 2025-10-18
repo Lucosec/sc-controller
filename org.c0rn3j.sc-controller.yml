@@ -41,7 +41,8 @@ modules:
       - pip3 install --prefix=/app --no-deps --no-build-isolation .
       - install -d /app/usr/share
       - cp -rf /app/share/* /app/usr/share
-      - ln -sf /usr/share/applications/org.c0rn3j.sc-controller.desktop /app/usr/share/applications/sc-controller.desktop
+      - cp /app/usr/share/applications/sc-controller.desktop /usr/share/applications/org.c0rn3j.sc-controller.desktop
+      - sed -i 's/Icon=sc-controller/Icon=org.c0rn3j.sc-controller/g' /usr/share/applications/sc-controller.desktop
     sources:
     - type: git
       url: https://github.com/Lucosec/sc-controller.git
