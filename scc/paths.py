@@ -9,17 +9,18 @@ All this is needed since I want to have entire thing installable, runnable
 from source tarball *and* debugable in working folder.
 """
 import os
+from pathlib import Path
 import sys
 
 def get_config_path() -> str:
 	"""Return configuration directory.
 
-	~/.config/scc under normal conditions.
+	~/.config/scc under normal conditions.Path("$HOME/.config")
 	"""
-	confdir = os.path.expanduser("~/.config")
+	confdir = Path(os.getenv("HOME")).joinpath(".config")
 	if "XDG_CONFIG_HOME" in os.environ:
-		confdir = os.environ['XDG_CONFIG_HOME']
-	return os.path.join(confdir, "scc")
+		confdir = Path(os.environ['XDG_CONFIG_HOME'])
+	return Path(confdir, "scc").as_posix()
 
 
 def get_profiles_path() -> str:
@@ -27,7 +28,7 @@ def get_profiles_path() -> str:
 
 	~/.config/scc/profiles under normal conditions.
 	"""
-	return os.path.join(get_config_path(), "profiles")
+	return Path(get_config_path(), "profiles").as_posix()
 
 
 def get_default_profiles_path() -> str:
@@ -37,7 +38,7 @@ def get_default_profiles_path() -> str:
 	or $SCC_SHARED/default_profiles if program is being started from
 	script extracted from source tarball
 	"""
-	return os.path.join(get_share_path(), "default_profiles")
+	return Path(get_share_path(), "default_profiles").as_posix()
 
 
 def get_menuicons_path() -> str:
@@ -45,7 +46,7 @@ def get_menuicons_path() -> str:
 
 	~/.config/scc/menu-icons under normal conditions.
 	"""
-	return os.path.join(get_config_path(), "menu-icons")
+	return Path(get_config_path(), "menu-icons").as_posix()
 
 
 def get_default_menuicons_path() -> str:
@@ -55,7 +56,7 @@ def get_default_menuicons_path() -> str:
 	or $SCC_SHARED/images/menu-icons if program is being started from
 	script extracted from source tarball
 	"""
-	return os.path.join(get_share_path(), "images/menu-icons")
+	return Path(get_share_path(), "images/menu-icons").as_posix()
 
 
 def get_button_images_path() -> str:
@@ -63,7 +64,7 @@ def get_button_images_path() -> str:
 
 	/usr/share/scc/images/button-images by default.
 	"""
-	return os.path.join(get_share_path(), "images/button-images")
+	return Path(get_share_path(), "images/button-images").as_posix()
 
 
 def get_menus_path() -> str:
@@ -71,7 +72,7 @@ def get_menus_path() -> str:
 
 	~/.config/scc/profiles under normal conditions.
 	"""
-	return os.path.join(get_config_path(), "menus")
+	return Path(get_config_path(), "menus").as_posix()
 
 
 def get_default_menus_path() -> str:
@@ -81,7 +82,7 @@ def get_default_menus_path() -> str:
 	or ./default_profiles if program is being started from
 	extracted source tarball
 	"""
-	return os.path.join(get_share_path(), "default_menus")
+	return Path(get_share_path(), "default_menus").as_posix()
 
 
 def get_controller_icons_path() -> str:
@@ -91,7 +92,7 @@ def get_controller_icons_path() -> str:
 
 	This directory may not exist.
 	"""
-	return os.path.join(get_config_path(), "controller-icons")
+	return Path(get_config_path(), "controller-icons").as_posix()
 
 
 def get_default_controller_icons_path() -> str:
@@ -103,7 +104,7 @@ def get_default_controller_icons_path() -> str:
 
 	This directory should always exist.
 	"""
-	return os.path.join(get_share_path(), "images", "controller-icons")
+	return Path(get_share_path(), "images", "controller-icons").as_posix()
 
 
 def get_share_path() -> str:
@@ -113,15 +114,17 @@ def get_share_path() -> str:
 	script extracted from source tarball
 	"""
 	if "SCC_SHARED" in os.environ:
-		return os.environ["SCC_SHARED"]
+		return Path(os.environ["SCC_SHARED"]).as_posix()
 	paths = (
 		"/usr/local/share/scc/",
+		"/app/usr/share/scc/",
 		os.path.expanduser("~/.local/share/scc"),
-		os.path.join(sys.prefix, "share/scc")
+		Path(sys.prefix, "share/scc").as_posix()
 	)
 	for path in paths:
-		if os.path.exists(path):
-			return path
+		p = Path(path)
+		if p.exists():
+			return p.as_posix()
 	# No path found, assume default and hope for best
 	return "/usr/share/scc"
 
@@ -131,7 +134,7 @@ def get_pid_file() -> str:
 
 	~/.config/scc/daemon.pid under normal conditions.
 	"""
-	return os.path.join(get_config_path(), "daemon.pid")
+	return Path(get_config_path(), "daemon.pid").as_posix()
 
 
 def get_daemon_socket() -> str:
@@ -139,4 +142,4 @@ def get_daemon_socket() -> str:
 
 	~/.config/scc/daemon.socket under normal conditions.
 	"""
-	return os.path.join(get_config_path(), "daemon.socket")
+	return Path(get_config_path(), "daemon.socket").as_posix()

@@ -28,6 +28,8 @@ import os
 import shlex
 from collections import OrderedDict
 import operator as op
+from pathlib import PurePath
+from pathlib import Path
 
 OPERATORS = {
 	ast.Add	: op.add,
@@ -76,13 +78,18 @@ def eval_expr(expr):
 
 def defines(base, include):
 
-	""" Extract #define from base/include following #includes """
+	if 'FLATPAK_ID' in os.environ:
+    # We are inside a Flatpak. The prefix is /app.
+		base = Path("/app/usr/include")
+	else:
+    # We are on a normal system. The prefix is /usr.
+		base = Path("/usr/include")
 
 	parsed = set()
-	fname = os.path.normpath(os.path.abspath(os.path.join(base, include)))
+	fname = Path(base, include).resolve()
 	parsed.add(fname)
 
-	with open(fname) as file:
+	with fname.open() as file:
 		lexer = shlex.shlex(file, posix=True)
 
 		lexer.whitespace = ' \t\r'
@@ -176,8 +183,8 @@ def defines(base, include):
 						name = name + tok
 				else:
 					name = tok
-				fname = os.path.normpath(os.path.abspath(os.path.join(base, name)))
-				if os.path.isfile(fname) and not fname in parsed:
+				fname = Path(base, name)
+				if fname.is_file() and not fname in parsed:
 					parsed.add(fname)
 					lexer.push_source(open(fname))
 			else:

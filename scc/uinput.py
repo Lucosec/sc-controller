@@ -23,6 +23,8 @@ from __future__ import annotations
 
 import ctypes
 import os
+from pathlib import Path
+from pathlib import PurePath
 from ctypes import POINTER, byref, c_bool, c_int16, c_int32, c_uint16
 from enum import IntEnum
 from math import copysign, fmod, sqrt
@@ -34,13 +36,17 @@ from scc.tools import find_library
 
 UNPUT_MODULE_VERSION = 9
 
-# Get All defines from linux headers
-if os.path.exists("/usr/include/linux/input-event-codes.h"):
-	CHEAD = defines("/usr/include", "linux/input-event-codes.h")
-elif os.path.exists(os.path.split(__file__)[0] + "/input-event-codes.h"):
-	CHEAD = defines(os.path.split(__file__)[0], "input-event-codes.h")
+base = Path("/usr/include/")
+
+if 'FLATPAK_ID' in os.environ:
+    base = Path("/app/usr/include/")
+
+if Path(base, "linux/input-event-codes.h").exists():
+    CHEAD = defines(base, "linux/input-event-codes.h")
+elif Path(Path(__file__).parent.resolve(), "/input-event-codes.h").exists():
+    CHEAD = defines(Path(__file__).parent.resolve(), "/input-event-codes.h")
 else:
-	CHEAD = defines("/usr/include", "linux/input.h")
+    CHEAD = defines(base, "linux/input.h")
 
 MAX_FEEDBACK_EFFECTS = 4
 
