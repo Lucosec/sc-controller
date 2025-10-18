@@ -117,7 +117,7 @@ def get_share_path() -> str:
 		return Path(os.environ["SCC_SHARED"]).as_posix()
 	paths = (
 		"/usr/local/share/scc/",
-		"/app/usr/share/scc/",
+		"/app/share/scc/",
 		os.path.expanduser("~/.local/share/scc"),
 		Path(sys.prefix, "share/scc").as_posix()
 	)

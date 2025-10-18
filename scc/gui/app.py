@@ -73,8 +73,8 @@ class App(Gtk.Application, UserDataManager, BindingEditor):
 		# Set variables
 		self.config = Config()
 		if 'FLATPAK_ID' in os.environ:
-			self.imagepath = "/app/usr/share/scc/images"
-			self.gladepath = "/app/usr/share/scc/glade"
+			self.imagepath = "/app/share/scc/images"
+			self.gladepath = "/app/share/scc/glade"
 		self.builder = None
 		self.recursing = False
 		self.statusicon = None

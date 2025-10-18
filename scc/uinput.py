@@ -39,7 +39,7 @@ UNPUT_MODULE_VERSION = 9
 base = Path("/usr/include/")
 
 if 'FLATPAK_ID' in os.environ:
-    base = Path("/app/usr/include/")
+    base = Path("/app/include/")
 
 if Path(base, "linux/input-event-codes.h").exists():
     CHEAD = defines(base, "linux/input-event-codes.h")

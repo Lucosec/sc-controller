@@ -80,13 +80,14 @@ def defines(base, include):
 
 	if 'FLATPAK_ID' in os.environ:
     # We are inside a Flatpak. The prefix is /app.
-		base = Path("/app/usr/include")
+		base = Path("/app/include")
 	else:
     # We are on a normal system. The prefix is /usr.
 		base = Path("/usr/include")
 
 	parsed = set()
 	fname = Path(base, include).resolve()
+	print(fname)
 	parsed.add(fname)
 
 	with fname.open() as file:
