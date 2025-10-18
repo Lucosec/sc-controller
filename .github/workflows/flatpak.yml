@@ -2,7 +2,7 @@ on:
   push:
     branches: [main]
   pull_request:
-name: CI
+name:
 jobs:
   flatpak:
     name: "Flatpak"
@@ -14,6 +14,6 @@ jobs:
     - uses: actions/checkout@v4
     - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
       with:
-        bundle: palette.flatpak
+        bundle: org.c0rn3j.sc-controller.flatpak
         manifest-path: org.c0rn3j.sc-controller.yml
         cache-key: flatpak-builder-${{ github.sha }}
