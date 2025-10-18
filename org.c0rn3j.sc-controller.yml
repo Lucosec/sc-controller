@@ -38,13 +38,14 @@ modules:
   - name: sc-controller
     buildsystem: simple
     build-commands:
+      - ls
       - pip3 install --prefix=/app --no-deps --no-build-isolation .
       - mv /app/share/applications/sc-controller.desktop /app/share/applications/org.c0rn3j.sc-controller.desktop
       - sed -i 's/Icon=sc-controller/Icon=joystick/g' /app/share/applications/org.c0rn3j.sc-controller.desktop
     sources:
       - type: git
-      - url: https://github.com/Lucosec/sc-controller.git
-      - tag: main
+        url: https://github.com/Lucosec/sc-controller.git
+        tag: main
 
 
 
